@@ -1,0 +1,29 @@
+{
+  "name": "real-time-web-2021",
+  "version": "1.0.0",
+  "description": "Real Time Chat App",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johancvb/real-time-web-2021.git"
+  },
+  "author": "Johan van Beusekom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johancvb/real-time-web-2021/issues"
+  },
+  "homepage": "https://github.com/johancvb/real-time-web-2021#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.0.1"
+  }
+}

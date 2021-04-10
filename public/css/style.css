@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lexend', sans-serif;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #b1bfd8;
+    background-image: linear-gradient(315deg, #b1bfd8 0%, #6782b4 74%);
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.login_container {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    width: 500px;
+    border-radius: 1em;
+    box-shadow: 0px 0px 31px 9px rgba(0,0,0,0.41);
+
+}
+
+.player_container {
+    background-color: white;
+    border-radius: 1em;
+}

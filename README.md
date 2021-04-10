@@ -1,6 +1,6 @@
 # Chat App
 
-Voor deze opsdracht moet ik een Real Time Chat App maken. Hierbij moet het dus mogelijk zijn dat er meerdere mensen met elkaar kunnen praten in een chatroom. 
+Voor deze opdracht moet ik een Real Time Chat App maken. Hierbij moet het dus mogelijk zijn dat er meerdere mensen met elkaar kunnen praten in een chatroom. 
 <br><br>
 Deze opdracht is een voorbereidende opdracht voor de eventuele eindopdracht.
 <br><br>
