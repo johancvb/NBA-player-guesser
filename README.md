@@ -12,7 +12,8 @@ De app maakt gebruik van websocket, waardoor er meerdere clients een connectie k
 Hieronder ziet u een paar schetsen van mogelijke User Interfaces:
 
 - De begin pagina, deze blijft hetzelfde:
-![](https://imgur.com/7Dczp4p.png)
+![](https://imgur.com/7Dczp4p.png){:height="200px" width="100px"}
+
 
 - De eerste game pagina schets:
 ![](https://imgur.com/LomFwNd.png)
