@@ -12,17 +12,20 @@ De app maakt gebruik van websocket, waardoor er meerdere clients een connectie k
 Hieronder ziet u een paar schetsen van mogelijke User Interfaces:
 
 - De begin pagina, deze blijft hetzelfde:
-![](https://imgur.com/7Dczp4p.png){:height="200px" width="100px"}
-
+<br>
+<img src="https://imgur.com/7Dczp4p.png" width="300" height="300">
 
 - De eerste game pagina schets:
-![](https://imgur.com/LomFwNd.png)
+<br>
+<img src="https://imgur.com/LomFwNd.png" width="300" height="300">
 
 - De tweede game pagina schets:
-![](https://imgur.com/K6T8aXm.png)
+<br>
+<img src="https://imgur.com/K6T8aXm.png" width="300" height="300">
 
 - De derde game pagina schets:
-![](https://imgur.com/ho48EH7.png)
+<br>
+<img src="https://imgur.com/ho48EH7.png" width="300" height="300">
 
 Ik denk dat de eerste schets het meest overzichtelijk, clean, en makkelijkst te gebruiken is voor de gebruiker.
 
