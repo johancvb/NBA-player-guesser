@@ -3,17 +3,13 @@ const app = express();
 const path = require('path');
 const http = require('http').createServer(app)
 const io = require('socket.io')(http);
-const port = process.env.PORT || 9999;
+const port = process.env.PORT || 9998;
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser')
-const randInt = Math.floor(Math.random() * 566);
 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-
+const formatMessage = require('./utils/messages');
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
+const AdminName = 'Admin';
 
 // Set static map
 app.use(express.static(path.resolve('public')))
@@ -21,46 +17,93 @@ app.use(express.static(path.resolve('public')))
 
 // Run when user connects
 
-app.get('/', function (req, res) {
-    res.redirect('/home');
-});
+io.on('connection', socket => {
 
-app.get('/home', function (req, res) {
-    io.on('connection', socket => {
-        console.log('New connection...')
-
-        socket.emit('message', 'Welcome to Chat App!')
-        console.log()
-
-    });
-    res.render('home');
-
-});
-
-app.post('/game', function (req, res) {
-
-    console.log(randInt)
-
-    fetch(`http://data.nba.net/data/10s/prod/v1/2020/players.json`)
-        .then(response => response.json())
-        .then(data => {
+        async function fetchData() {
+            const randInt = Math.floor(Math.random() * 566);
+            const response = await fetch('http://data.nba.net/data/10s/prod/v1/2020/players.json') 
+            const data = await response.json()
             const players = data.league.standard;
             const randomPlayerID = players[randInt].personId;
             const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${randomPlayerID}.png`;
+            return playerImg
+        }
 
-            res.render('game', {
-                playerImg: playerImg
-            });
+        
+        socket.on('event', data => {
+            
+            fetchData()
+            .then(img => 
+                console.log(img),
+                io.emit('fetchData', img))
+            
         })
 
-    io.on('connection', socket => {
-        console.log('New connection...')
+    socket.on('joinRoom', ({ username, room }) => {
 
-        socket.emit('message', 'Welcome to Chat App!')
+        // Run API
+        // async function fetchData() {
+        //     const randInt = Math.floor(Math.random() * 566);
+
+        //     await fetch(`http://data.nba.net/data/10s/prod/v1/2020/players.json`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const players = data.league.standard;
+        //             const randomPlayerID = players[randInt].personId;
+        //             const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${randomPlayerID}.png`;
+        //             return playerImg
+        //         })
+
+        // }
 
 
 
+
+
+
+
+
+        const user = userJoin(socket.id, username, room);
+
+        socket.join(user.room)
+
+        // Welcome current user
+        socket.emit('message', formatMessage(AdminName, 'Welcome to the NBA Player Guesser chat!'));
+
+        // Broadcast when user connects
+        socket.broadcast
+            .to(user.room)
+            .emit('message',
+                formatMessage(AdminName, `${user.username} has joined the chat.`));
+
+        // Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        })
     });
+
+    // Listen for chatMessage
+    socket.on('chatMessage', msg => {
+        const user = getCurrentUser(socket.id);
+
+        io.to(user.room).emit('message', formatMessage(user.username, msg));
+    })
+
+    // When client disconnects
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id);
+
+        if (user) {
+            io.to(user.room).emit('message', formatMessage(AdminName, `${user.username} has left the chat.`));
+
+            // Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            })
+        }
+    })
 })
 
 
