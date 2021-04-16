@@ -12,12 +12,11 @@ const { username, room } = Qs.parse(location.search, {
 const socket = io();
 
 // API 
-
-socket.on('fetchData', img => {
-    img.src = img
-    console.log(img)
-    console.log('Dit is de image source:' + img.src )
+socket.on('playerImg', (url) => {
+    img.src = url
 })
+socket.emit('event')
+
 
 // Join gameroom
 socket.emit('joinRoom', { username, room })

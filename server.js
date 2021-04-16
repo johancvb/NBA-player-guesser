@@ -3,13 +3,15 @@ const app = express();
 const path = require('path');
 const http = require('http').createServer(app)
 const io = require('socket.io')(http);
-const port = process.env.PORT || 9998;
-const fetch = require('node-fetch');
+const port = process.env.PORT || 9999;
+
 const bodyParser = require('body-parser')
 
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
+const fetchData = require('./utils/apiHandler')
 const AdminName = 'Admin';
+let currentPlayerImg;
 
 // Set static map
 app.use(express.static(path.resolve('public')))
@@ -19,49 +21,24 @@ app.use(express.static(path.resolve('public')))
 
 io.on('connection', socket => {
 
-        async function fetchData() {
-            const randInt = Math.floor(Math.random() * 566);
-            const response = await fetch('http://data.nba.net/data/10s/prod/v1/2020/players.json') 
-            const data = await response.json()
-            const players = data.league.standard;
-            const randomPlayerID = players[randInt].personId;
-            const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${randomPlayerID}.png`;
-            return playerImg
+    fetchData()
+
+    socket.on('event', data => {
+        if (currentPlayerImg) {
+            io.emit('playerImg', currentPlayerImg)
+        }
+        else {
+            fetchData()
+                .then(img => {
+                    io.emit('playerImg', img)
+                    currentPlayerImg = img
+                })
+                    
         }
 
-        
-        socket.on('event', data => {
-            
-            fetchData()
-            .then(img => 
-                console.log(img),
-                io.emit('fetchData', img))
-            
-        })
+    })
 
     socket.on('joinRoom', ({ username, room }) => {
-
-        // Run API
-        // async function fetchData() {
-        //     const randInt = Math.floor(Math.random() * 566);
-
-        //     await fetch(`http://data.nba.net/data/10s/prod/v1/2020/players.json`)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             const players = data.league.standard;
-        //             const randomPlayerID = players[randInt].personId;
-        //             const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${randomPlayerID}.png`;
-        //             return playerImg
-        //         })
-
-        // }
-
-
-
-
-
-
-
 
         const user = userJoin(socket.id, username, room);
 
