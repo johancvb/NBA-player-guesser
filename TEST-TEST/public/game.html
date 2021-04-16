@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"
+        integrity="sha512-aTKlYRb1QfU1jlF3k+aS4AqTpnTXci4R79mkdie/bp6Xm51O5O3ESAYhvg6zoicj/PD6VYY0XrYwsWLcvGiKZQ=="
+        crossorigin="anonymous"></script>
+    <script defer src="/socket.io/socket.io.js"></script>
+    <script defer src="/js/script.js"></script>
+    <!-- <script defer src="/js/apiHandler.js"></script> -->
+
+    <title>NBA Players Guesser</title>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="index.html">Home</a>
+    </header>
+
+    <div class="container">
+        <div class="player_container">
+            <img id="playerImage" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/203507.png">
+            <div class="player_text">
+                <h1>Who is this player?</h1>
+            </div>
+        </div>
+
+        <div class="answers_container"></div>
+
+        <div class="chat_container">
+            <div class="chat">
+                <div class="chat_users">
+                    <h2 id="room_name"></h2>
+                    <ul id="users"></ul>
+                </div>
+
+                <div class="chat_messages">
+
+                </div>
+                <form id="chat_form">
+                    <input type="text" name="chat_input" id="msg" required autocomplete="off"
+                        placeholder="Enter message">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="./img/nba.png" type="image/icon type">
+    <title>NBA Player Guesser</title>
+</head>
+<body>
+    <main>
+        <div class="login_container">
+            <header>
+                <h1>Welcome to the NBA Player Guesser!</h1>
+            </header>
+            <form action="game.html">
+                <label for="username">Enter your username here:</label>
+                <input type="text" name="username" id="username" required>
+
+                <label for="room">What game would you like to play?</label>
+                <select name="room" id="room">
+                    <option value="players">Player by images</option>
+                    <option value="numbers">Player by jersey number</option>
+                </select>
+                <button type="submit" class="btn">Join Game</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
