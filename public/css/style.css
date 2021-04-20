@@ -96,25 +96,16 @@ main {
 
 .answers_container { 
     grid-area: 2 / 1 / 3 / 2; 
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
-    padding: 30px;
 }
 
-.answers_container button {
-    border-radius: 1em;
+#guess {
+    height: 20px;
+    width: 300px;
+    font-size: 1.5em;
     outline: none;
-    background-color: white;
-    cursor: pointer;
+    padding: 10px;
 }
 
-.answers_container button:hover {
-    transform: scale(1.03);
-    transition: 0.2s ease-in;
-}
 
 /* CHAT */
 

@@ -10,7 +10,7 @@ const bodyParser = require('body-parser')
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 const fetchData = require('./utils/apiHandler')
-const AdminName = 'Admin';
+const AdminName = 'Chat Bot';
 let currentPlayerImg;
 
 // Set static map
@@ -40,27 +40,9 @@ io.on('connection', socket => {
 
     socket.on('render', data => {
         fetchData()
-        .then(players => {
-            let playerArr = [];
-
-            for(let i = 0; i < 1; i++){
-                const randInt = Math.floor(Math.random() * 566);
-                playerArr.push(players[randInt])
-                io.emit('player', playerArr[i])
-
-                
-                
-            }
-            socket.on('correctPlayer', correctPlayer => {
-                io.emit('answers', players, correctPlayer )
-            })
-
-            socket.on('correctAnswer', correctAnswer => {
-                console.log(correctAnswer)
-            })
+        .then(player => {
+            io.emit('player', player)
             
-            
-
             
         })
     })
