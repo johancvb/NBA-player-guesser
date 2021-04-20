@@ -21,21 +21,48 @@ app.use(express.static(path.resolve('public')))
 
 io.on('connection', socket => {
 
-    fetchData()
+    // fetchData()
 
-    socket.on('event', data => {
-        if (currentPlayerImg) {
-            io.emit('playerImg', currentPlayerImg)
-        }
-        else {
-            fetchData()
-                .then(img => {
-                    io.emit('playerImg', img)
-                    currentPlayerImg = img
-                })
+    // socket.on('event', data => {
+    //     if (currentPlayerImg) {
+    //         io.emit('playerImg', currentPlayerImg)
+    //     }
+    //     else {
+    //         fetchData()
+    //             .then(img => {
+    //                 io.emit('playerImg', img)
+    //                 currentPlayerImg = img
+    //             })
                     
-        }
+    //     }
 
+    // })
+
+    socket.on('render', data => {
+        fetchData()
+        .then(players => {
+            let playerArr = [];
+
+            for(let i = 0; i < 1; i++){
+                const randInt = Math.floor(Math.random() * 566);
+                playerArr.push(players[randInt])
+                io.emit('player', playerArr[i])
+
+                
+                
+            }
+            socket.on('correctPlayer', correctPlayer => {
+                io.emit('answers', players, correctPlayer )
+            })
+
+            socket.on('correctAnswer', correctAnswer => {
+                console.log(correctAnswer)
+            })
+            
+            
+
+            
+        })
     })
 
     socket.on('joinRoom', ({ username, room }) => {

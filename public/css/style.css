@@ -66,14 +66,10 @@ main {
 
 /* PLAYER IMAGE */
 .player_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
     background-color: white;
     border-radius: 1em;
     grid-area: 1 / 1 / 2 / 2; 
     text-align: center;
-    align-items: baseline;
     overflow: hidden;
 }
 
@@ -115,6 +111,11 @@ main {
     cursor: pointer;
 }
 
+.answers_container button:hover {
+    transform: scale(1.03);
+    transition: 0.2s ease-in;
+}
+
 /* CHAT */
 
 .chat_container { 
@@ -133,7 +134,25 @@ main {
 
 #users {
     list-style-type: none;
+    display: flex;
+    align-items: center;
+
 }
+
+.user {
+    margin-right: 10px;    
+    display: flex;
+    align-items: center;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    background-color: limegreen;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 1px;
+  }
 
 .chat_messages {
     padding: 20px;
