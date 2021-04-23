@@ -16,29 +16,55 @@ const { username, room } = Qs.parse(location.search, {
 const socket = io();
 
 // API 
-socket.on('player', player => {
+// socket.on('player', player => {
     
+//     console.log(player)
+//     const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`;
+//     img.src = playerImg
+
+//     form.addEventListener('submit', function (event) {
+
+//         if (input.value === player.lastName || input.value === player.firstName + " " + player.lastName) {
+//             console.log("correct")
+//             socket.emit('render')
+            
+//         }
+        
+//         event.preventDefault()
+//         input.value = '';
+//         input.focus();
+        
+//     })
+    
+// })
+
+
+socket.on('player', player => {
+
     console.log(player)
     const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`;
     img.src = playerImg
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', checkPlayer)
+
+    function checkPlayer(event) {
 
         if (input.value === player.lastName || input.value === player.firstName + " " + player.lastName) {
             console.log("correct")
             socket.emit('render')
-            
+
+        } else {
+            console.log('wrong')
         }
-        
+
         event.preventDefault()
         input.value = '';
         input.focus();
-        
-    })
-    
+        form.removeEventListener('submit', checkPlayer)
+    }
+
 })
 socket.emit('render')
-
 
 // Join gameroom
 socket.emit('joinRoom', { username, room })
