@@ -5,13 +5,12 @@ const http = require('http').createServer(app)
 const io = require('socket.io')(http);
 const port = process.env.PORT || 9999;
 
-const bodyParser = require('body-parser')
-
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 const fetchData = require('./utils/apiHandler')
 const AdminName = 'Chat Bot';
 let currentPlayer;
+let score = {};
 
 // Set static map
 app.use(express.static(path.resolve('public')))
@@ -23,42 +22,36 @@ io.on('connection', socket => {
 
     socket.on('render', data => {
         if (currentPlayer) {
-            io.emit('player', currentPlayer)
+            io.emit('player', {player: currentPlayer, score})
         }
         else {
             fetchData()
                 .then(player => {
-                    io.emit('player', player)
+                    io.emit('player', {player, score})
                     currentPlayer = player
                 })
-
         }
-
     })
 
     socket.on('correct', data => {
+        if (score[data.name]){
+            score[data.name] += 1
+        }
+        else {
+            score[data.name] = 1
+        }
+        // console.log(score)
+
         fetchData()
         .then(player => {
-            io.emit('player', player)
+            io.emit('player', {player, score})
             currentPlayer = player
         })
     })
 
-    // socket.on('render', data => {
-    //     if (!currentPlayer) {
-    //         fetchData()
-    //             .then(player => {
-    //                 io.emit('player', player)
-    //             })
-    //     }
-    //     else {
-    //         io.emit('player', currentPlayer)
-    //     }
-
-    // })
-
     socket.on('joinRoom', ({ username, room }) => {
 
+        score[username] = 0
         const user = userJoin(socket.id, username, room);
 
         socket.join(user.room)
@@ -75,7 +68,7 @@ io.on('connection', socket => {
         // Send users and room info
         io.to(user.room).emit('roomUsers', {
             room: user.room,
-            users: getRoomUsers(user.room)
+            score
         })
     });
 
@@ -101,8 +94,5 @@ io.on('connection', socket => {
         }
     })
 })
-
-
-
 
 http.listen(port, () => console.log(`Server is running on port: ${port}, http://localhost:${port}`));

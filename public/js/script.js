@@ -16,42 +16,44 @@ const { username, room } = Qs.parse(location.search, {
 const socket = io();
 
 // API 
-socket.on('player', player => {
-    
-    console.log(player)
-    const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`;
+let currentPlayer = {};
+
+socket.on('player', data => {
+
+    console.log(data.player.lastName, data.player.isActive)
+
+    outputUsers(data.score);
+
+    currentPlayer = data.player;
+    const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${data.player.personId}.png`;
     img.src = playerImg
-
-
-    form.addEventListener('submit', checkPlayer)
-
-    function checkPlayer(e) {
-        console.log(player)
-        if(input.value.toLowerCase() === player.lastName.toLowerCase() || input.value.toLowerCase() === player.firstName.toLowerCase() + " " + player.lastName.toLowerCase()) {
-            console.log("Correct")
-            e.preventDefault()
-            input.value = '';
-            input.focus();
-            socket.emit('correct', {name: username})
-            form.removeEventListener('submit', checkPlayer)
-        } 
-        else {
-            console.log("Fout")
-            e.preventDefault()
-            input.value = '';
-            input.focus();
-        }
-    }
 })
+
+form.addEventListener('submit', checkPlayer)
+
+function checkPlayer(e) {
+    e.preventDefault()
+    if (input.value.toLowerCase() === currentPlayer.lastName.toLowerCase() || input.value.toLowerCase() === currentPlayer.firstName.toLowerCase() + " " + currentPlayer.lastName.toLowerCase()) {
+        console.log("Correct")
+        input.value = '';
+        input.focus();
+        socket.emit('correct', { name: username })
+    }
+    else {
+        console.log("Fout")
+        input.value = '';
+        input.focus();
+    }
+}
 socket.emit('render')
 
 // Join gameroom
 socket.emit('joinRoom', { username, room })
 
 // Get room and users
-socket.on('roomUsers', ({ room, users }) => {
+socket.on('roomUsers', ({ room, score }) => {
     outputRoomName(room);
-    outputUsers(users);
+    outputUsers(score);
 })
 
 // Message from server
@@ -98,12 +100,19 @@ function outputRoomName(room) {
 }
 
 // Add users to DOM
-function outputUsers(users) {
+function outputUsers(score) { 
+    const users = Object.keys(score).map(key => {
+        return {
+            username: key,
+            score: score[key]
+        }
+    })
+
     userList.innerHTML = `
     ${users.map(user => `
     <div class="user">
         <span class="dot"></span>
-        <li>${user.username} ()</li>
+        <li>${user.username} (${user.score})</li>
     </div>`).join('')}
     `;
 }
