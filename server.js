@@ -11,7 +11,7 @@ const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 const fetchData = require('./utils/apiHandler')
 const AdminName = 'Chat Bot';
-let currentPlayerImg;
+let currentPlayer;
 
 // Set static map
 app.use(express.static(path.resolve('public')))
@@ -21,31 +21,41 @@ app.use(express.static(path.resolve('public')))
 
 io.on('connection', socket => {
 
-    // fetchData()
-
-    // socket.on('event', data => {
-    //     if (currentPlayerImg) {
-    //         io.emit('playerImg', currentPlayerImg)
-    //     }
-    //     else {
-    //         fetchData()
-    //             .then(img => {
-    //                 io.emit('playerImg', img)
-    //                 currentPlayerImg = img
-    //             })
-                    
-    //     }
-
-    // })
-
     socket.on('render', data => {
+        if (currentPlayer) {
+            io.emit('player', currentPlayer)
+        }
+        else {
+            fetchData()
+                .then(player => {
+                    io.emit('player', player)
+                    currentPlayer = player
+                })
+
+        }
+
+    })
+
+    socket.on('correct', data => {
         fetchData()
         .then(player => {
             io.emit('player', player)
-            
-            
+            currentPlayer = player
         })
     })
+
+    // socket.on('render', data => {
+    //     if (!currentPlayer) {
+    //         fetchData()
+    //             .then(player => {
+    //                 io.emit('player', player)
+    //             })
+    //     }
+    //     else {
+    //         io.emit('player', currentPlayer)
+    //     }
+
+    // })
 
     socket.on('joinRoom', ({ username, room }) => {
 

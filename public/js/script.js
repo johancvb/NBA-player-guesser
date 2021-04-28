@@ -16,53 +16,32 @@ const { username, room } = Qs.parse(location.search, {
 const socket = io();
 
 // API 
-// socket.on('player', player => {
-    
-//     console.log(player)
-//     const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`;
-//     img.src = playerImg
-
-//     form.addEventListener('submit', function (event) {
-
-//         if (input.value === player.lastName || input.value === player.firstName + " " + player.lastName) {
-//             console.log("correct")
-//             socket.emit('render')
-            
-//         }
-        
-//         event.preventDefault()
-//         input.value = '';
-//         input.focus();
-        
-//     })
-    
-// })
-
-
 socket.on('player', player => {
-
+    
     console.log(player)
     const playerImg = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`;
     img.src = playerImg
 
+
     form.addEventListener('submit', checkPlayer)
 
-    function checkPlayer(event) {
-
-        if (input.value === player.lastName || input.value === player.firstName + " " + player.lastName) {
-            console.log("correct")
-            socket.emit('render')
-
-        } else {
-            console.log('wrong')
+    function checkPlayer(e) {
+        console.log(player)
+        if(input.value.toLowerCase() === player.lastName.toLowerCase() || input.value.toLowerCase() === player.firstName.toLowerCase() + " " + player.lastName.toLowerCase()) {
+            console.log("Correct")
+            e.preventDefault()
+            input.value = '';
+            input.focus();
+            socket.emit('correct', {name: username})
+            form.removeEventListener('submit', checkPlayer)
+        } 
+        else {
+            console.log("Fout")
+            e.preventDefault()
+            input.value = '';
+            input.focus();
         }
-
-        event.preventDefault()
-        input.value = '';
-        input.focus();
-        form.removeEventListener('submit', checkPlayer)
     }
-
 })
 socket.emit('render')
 
@@ -124,7 +103,7 @@ function outputUsers(users) {
     ${users.map(user => `
     <div class="user">
         <span class="dot"></span>
-        <li>${user.username}</li>
+        <li>${user.username} ()</li>
     </div>`).join('')}
     `;
 }
