@@ -78,15 +78,16 @@ Hieronder een lijstje van Must Have's, Should Have's en Could Have's. (MoSCoW-me
 
 ### Must Have's:
 
-* [ x ] Een room maken waar een speler in kan joinen.
-* [ x ] Meerdere clients kunnen de room joinen.
-* [ x ] Events worden via de server naar de clients verwerkt.
-* [ x ] Clients synchroniseren met elkaar (Als één client iets doet, zien de andere clients dit ook.).
-* [ x ] Scores worden bij elk goed antwoord bijgevoegd.
+* [x] Een room maken waar een speler in kan joinen.
+* [x] Meerdere clients kunnen de room joinen.
+* [x] Events worden via de server naar de clients verwerkt.
+* [x] Clients synchroniseren met elkaar (Als één client iets doet, zien de andere clients dit ook.).
+* [x] Scores worden bij elk goed antwoord bijgevoegd.
 
 ### Should Have's:
 
 * [ ] Verschillende "parameters" kunnen veranderen, dus bijvoorbeeld spelers raden uit een ander seizoen.
+* [ ] User feedback als een antwoord fout is.
 
 ### Could Have's:
 

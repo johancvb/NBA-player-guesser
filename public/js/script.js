@@ -20,7 +20,7 @@ let currentPlayer = {};
 
 socket.on('player', data => {
 
-    console.log(data.player.lastName, data.player.isActive)
+    console.log(data.player.lastName)
 
     outputUsers(data.score);
 
@@ -34,13 +34,11 @@ form.addEventListener('submit', checkPlayer)
 function checkPlayer(e) {
     e.preventDefault()
     if (input.value.toLowerCase() === currentPlayer.lastName.toLowerCase() || input.value.toLowerCase() === currentPlayer.firstName.toLowerCase() + " " + currentPlayer.lastName.toLowerCase()) {
-        console.log("Correct")
         input.value = '';
         input.focus();
         socket.emit('correct', { name: username })
     }
     else {
-        console.log("Fout")
         input.value = '';
         input.focus();
     }
