@@ -22,31 +22,33 @@ io.on('connection', socket => {
 
     socket.on('render', data => {
         if (currentPlayer) {
-            io.emit('player', {player: currentPlayer, score})
+            io.emit('player', { player: currentPlayer, score })
         }
         else {
             fetchData()
                 .then(player => {
-                    io.emit('player', {player, score})
+                    io.emit('player', { player, score })
                     currentPlayer = player
                 })
         }
     })
 
     socket.on('correct', data => {
-        if (score[data.name]){
+
+        if (score[data.name]) {
             score[data.name] += 1
         }
         else {
             score[data.name] = 1
         }
+
         // console.log(score)
 
         fetchData()
-        .then(player => {
-            io.emit('player', {player, score})
-            currentPlayer = player
-        })
+            .then(player => {
+                io.emit('player', { player, score })
+                currentPlayer = player
+            })
     })
 
     socket.on('joinRoom', ({ username, room }) => {
